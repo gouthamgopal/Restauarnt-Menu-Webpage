@@ -1,0 +1,56 @@
+Everytime we are entering the python console to do the sql operations using sqlalchemy we need to import and setup the following items,
+to create a session to access the DB.
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+// This next line is to import the required class from the created python file
+from database_setup import Base, Restaurant, MenuItem
+
+// Now create an engine to access the sqlite DB
+engine = create_engine('sqlite:///restaurantmenu.db')
+
+// Now create an instance for the sessionmaker to bind the engine to sqlalchemy
+DBSession = sessionmaker(bind = engine)
+
+// Now create an instance of this DBSession to use for sql operations
+session = DBSession()
+
+These have to be done everytime we need to do CRUD operations on our database.
+
+// We can create each data entry in the database table as follows: The C in CRUD
+
+First create the row which we want to insert using the class of the table we imported earlier.
+eg: resto1 = Restaurant(name = "Resto1")
+then using the session instance we can stage the change and commit to the database.
+
+session.add(resto1)
+session.commit()
+
+// Various query operations that can be performed in python console. This is for reading data from the database.
+// The R in CRUD
+
+query(<TableName>).all() -> This gives all the rows in the given table.
+query(<TableName>).first() -> This gives us the first row stored in the table, the values of the row can be accessed by using the object
+notation for the given table attributes.
+
+There are other query methods which can be used extensively for various querying from the DB. This we can checkout from sqlalchemy docs.
+
+// Now for the updation of the entries in the database tables.
+// The U in CRUD
+
+For this we can follow the following 4 step process.
+1. Find the entry that we want to update and store it in a variable. This we can do using filter_by feature in the query.
+eg: item = session.query(<TableName>).filter_by(attr = <some value>)
+
+2. now we can change the attribute we want to update using the filtered object we got above.
+eg: item.attr = new_value
+
+3. now we can just stage the change as before
+4. commit the change using the session instance.
+
+// Delete operation in a DB, D in CRUD
+This is a 3 step process similar to the update operation.
+here we first grab the entry that we want to delete using the query method.
+Then we delete the entry using session.delete(<entry>)
+Finally we can commit the change using session.commit()
