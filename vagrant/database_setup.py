@@ -20,6 +20,13 @@ class Restaurant(Base):
     name = Column(String(80), nullable = False)
     id = Column(Integer, primary_key = True)
 
+    @property
+    def serialize(self):
+        return {
+            'name' : self.name,
+            'id' : self.id
+        }
+
 class MenuItem(Base):
     __tablename__ = 'menu_item'
     name = Column(String(80), nullable = False)
@@ -29,6 +36,17 @@ class MenuItem(Base):
     price = Column(String(8))
     restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
     restaurant = relationship(Restaurant)
+
+    @property
+    def serialize(self):
+        return {
+            'name' : self.name,
+            'id' : self.id,
+            'course' : self.course,
+            'description' : self.description,
+            'price' : self.price,
+            'restaurant_id' : self.restaurant_id
+        }
 
 
 # ending configuration code
