@@ -63,7 +63,7 @@ class webserverHandler(BaseHTTPRequestHandler):
                 output += "</body></html>"
 
                 self.wfile.write(output)
-                print output
+                print(output)
             
             if self.path.endswith("/edit"):
                 self.send_response(200)
